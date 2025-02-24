@@ -1,4 +1,4 @@
-# **Avaliação Técnica – Arquiteto II**
+# **Avaliação Técnica**
  
 ## **Contexto**  
 A companhia opera com **seis diferentes ERPs**, responsáveis por gerar **Notas Fiscais Eletrônicas (NFes)** para diferentes tipos de operações e produtos. Cada ERP possui sua própria estrutura de dados e regras de negócio, tornando o **cálculo de impostos inconsistente** e **dificultando a conformidade fiscal**.  
