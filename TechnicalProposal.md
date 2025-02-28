@@ -4,8 +4,10 @@
 1. **Exemplo de cálculo 🧮**
 2. **Contrato de payload 📝**
 3. **Cadastros necessários 📚**
-4. **Tecnologias/configuraçoes ⚙️**
-5. **Diagramas 📊**
+4. **RPS**
+5. **Consumo de banda**
+6. **Armazenamento**
+7. **Diagramas 📊**
 
 
 ---
@@ -173,30 +175,91 @@ COFINS = 450 x 7,60% = R$34,20
 
 ---
 
-#  ⚙️ **Configuração/Ferramentas:**
-* **Servicebus**: 
-    - 1 fila por ERP
-        - Considerando baixa latência de resposta por ERP, onde as filas serão consumidas em paralelo
-        - Isolamento de consumo de mensagens de erps, facilitando identificação de gargalos, erros, necessidade de reprocessamentos 
-    - Prefetch count: 5
-       - Valor baixo, pensando no cenário de 6 erps, 6 consumidores, momento de pico, sobrecarga de ms e baixa latência
-    - Habilitar partitioned queues (para maior throughput, disponibilidade, escalabilidade e concorrência)
+# Requisições Simultâneas (RPS)
 
-* **Kubernets**
-    - Liveness e Readiness Probes (para garantir que os pods não fiquem presos)
-    - autoscaling:
-        - cpu 85%
-        - memória 80%
-        - minimo de 2 instâncias
-        - máximo de 6 instâncias
-* **Java/spring**:
-    - Redis: para obter os parâmetros de alíquotas(por ufs emit x dest) pré carregados da base em cálculos anteriores.
-    - Spring Cloud Stream e project reactor: Para consumo de mensagens de forma reativa, não bloqueante.
-    - Datadog: (Para monitoramento, rastreabilidade de erros, visualização de métricas e garantir que as configurações de infraestrutura estarão atendendo as necessidades do produto)
-        - Logs
-        - Traces
-        - Métricas
-        - Alertas
+**A Carga de trabalho esperada é:**
+- 10 mil requests por minuto  
+- Cada requisição tem um payload médio de 10 KB
+- Pico de faturamento ocorre em um período de 4 horas diariamente  
+
+**Então, vamos considerar um volume esperado  de 2.400.000 notas em 4 horas, no pico de faturamento, o que significa:**
+- 2.400.000 / 4 horas = 600.000 notas/hora
+- 600.000 / 3.600 segundos = ~167 RPS (média)
+- Considerando uma margem de seguraça, 2 x 167 → ~335 RPS
+- **Objetivo, sistema suportar ~335 RPS**
+
+
+**Tempo médio de uma requisição**
+- Publicação do payload de entrada no Service Bus ~5ms
+- Redis (cache de alíquotas) ~1-2 ms
+- Cálculo (Java) ~5 ms
+- Leitura do SQL Server: ~5-10 ms.
+- Escrita no SQL Server: ~5-10 ms.
+- Webhook para ERP (notificação do cálculo): ~10-15 ms.
+- **Total estimado:** ~40 ms por requisição
+
+**Cálculo por thread:**
+- 1 thread = 1s / 40ms = ~25 RPS
+- Para 335 RPS, então **precisamos de ~14 threads rodando em paralelo**.
+
+
+**Infraestrutura necessária (para suportar 335 RPS):**
+- CPU e Threads
+    - Cada core suporta ~25 RPS.
+    - 335 RPS / 25 RPS por core = 14 vCPUs.
+        - Trabalhar com minimo de 2 vCPUs(período ocioso) à 18 vCPUs(momentos de pico).
+
+**Memória RAM**
+- Redis precisa de ~2 GB para armazenar cache.
+- SQL Server precisa de ~8 GB para evitar swap.
+- Aplicação Java (Spring Boot) precisa de 1 a 1.5 GB por pod.
+
+**Kubernetes e Auto Scaling**
+- Mínimo de 2 pods (cada um com 1 vCPUs e 1 GB RAM) e permitir escalonamento automático até 9 pods e cada pod até 2vCPUs.
+- Trigger de auto scaling: CPU acima de 70%
+
+**Banco de Dados**
+- Redis (Cache de alíquotas)
+    - Configurar TTL dinâmico para evitar uso excessivo de memória.
+    - Replicação para alta disponibilidade.
+
+**SQL Server** (Outbox Pattern)
+- Tabela particionada para evitar locking excessivo.
+- Gravação assíncrona para melhor performance.
+- Base de leitura e base de escrita
+- Outbox Pattern com tempo de job pré configurado, para replicação em batchs e não sobrecarregar as operações de escrita/leitura de cada base
+
+
+-----
+
+# Consumo de Banda
+
+- Se cada documento tem 10 KB, e recebemos 2.400.000 por dia:
+    - Entrada total/dia = 2.400.000 × 10 KB = 24 GB/dia
+    - 24 GB / 4 horas = 6 GB/hora
+    - 6 GB / 3600 seg = ~1.7 MB/s.
+    - Então, precisamos de uma banda mínima de 15 Mbps (1.7 MB x 8 = 13.6Mbps).
+
+- Cálculo de tráfego de leitura
+    - Considerando a leitura de cada registro, vamos considerar margem de reprocessamento (2X), cada leitura retornando ~10 KB.
+        - Saída total/dia = 2.400.000 × 10 KB × 2 = 48 GB/dia
+        - Se distribuirmos ao longo do dia (24h):
+        - 48 GB / 24 horas = 2 GB/hora
+        - 2 GB / 3600s = ~4.5Mbps
+
+## Banda Total Estimada
+| Tipo                   | Dados/dia | Pico/hora | Largura de banda necessária |
+|------------------------|-----------|-----------|-----------------------------|
+| Entrada (ERPs → API)   | 24 GB     | 6 GB      | ~15 Mbps                    |
+| Saída (API → Consultas)| 48 GB     | 2 GB      | ~4.5 Mbps                   |
+| **Total**              | **72 GB** | **8 GB**  | **~20 Mbps**                |
+
+
+
+------
+
+# Armazenamento
+
 
 ---
 📊 Diagramas:
