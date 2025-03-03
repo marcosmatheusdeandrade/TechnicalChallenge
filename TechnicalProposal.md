@@ -1,89 +1,77 @@
 
-# Tópicos abordados 📑
+# **📑 Tópicos abordados**
 
 1. **Exemplo de cálculo 🧮**
 2. **Contrato de payload 📝**
-3. **Cadastros necessários 📚**
-4. **RPS/Infra**
-5. **Consumo de banda/Infra**
-6. **Armazenamento**
+3. **Cadastros/tabelas necessárias 📚**
+4. **RPS ⚡**
+5. **Consumo de banda 🌐**
+6. **Armazenamento 📦**
 7. **Diagramas 📊**
 
 
 ---
 
-## 🧮 Exemplo de cálculo de impostos para cerveja (engradado)
+# 🧮 Exemplo de cálculo de impostos para cerveja (engradado)
 
-###  ⭐ Cenário: Venda de Cerveja de SP para MG
-- **UF do Emitente:** SP  
-- **UF do Destinatário:** MG  
-- **idDest:** 2 (Operação Interestadual)  
-- **indPres:** 1 (Venda presencial)  
-- **Produto:**  
-  - **Descrição:** Engradado de Cerveja (12 garrafas de 600ml)  
-  - **Quantidade:** 5 engradados  
-  - **Valor Unitário:** R$90,00 (por engradado)  
-  - **CFOP:** 6102 (Venda Interestadual)  
-  - **NCM:** 2203.00.00 (Cerveja de Malte)  
-  - **CST:** 10 (Tributado com Substituição Tributária)  
-
-
-###  💰 **Alíquotas Aplicáveis**
-- **ICMS SP → MG:** 12%  
-- **ICMS ST MG:** 25%  
-- **FCP MG:** 2%  
-- **MVA (Margem de Valor Agregado) para cerveja:** 45%  
-- **PIS:** 1,65%  
-- **COFINS:** 7,60%  
-- **ICMS Interno MG:** 25% (para cálculo do DIFAL)  
+- Cenário: Venda de Cerveja de SP para MG
+    - **UF do Emitente:** SP  
+    - **UF do Destinatário:** MG  
+    - **idDest:** 2 (Operação Interestadual)  
+    - **indPres:** 1 (Venda presencial)  
+    - **Produto:**  
+      - **Descrição:** Engradado de Cerveja (12 garrafas de 600ml)  
+      - **Quantidade:** 5 engradados  
+      - **Valor Unitário:** R$90,00 (por engradado)  
+      - **CFOP:** 6102 (Venda Interestadual)  
+      - **NCM:** 2203.00.00 (Cerveja de Malte)  
+      - **CST:** 10 (Tributado com Substituição Tributária)  
 
 
-
-
-### ✅ **1. Cálculo do ICMS Próprio**
-**Base de cálculo do ICMS:**  
-Base = quantidade × valorUnitário = 5 × 90 = R$450,00
-
-**ICMS próprio (SP - origem):**  
-ICMS = 450 x 12% = R$54,00
+- **Alíquotas Aplicáveis**
+    - **ICMS SP → MG:** 12%  
+    - **ICMS ST MG:** 25%  
+    - **FCP MG:** 2%  
+    - **MVA (Margem de Valor Agregado) para cerveja:** 45%  
+    - **PIS:** 1,65%  
+    - **COFINS:** 7,60%  
+    - **ICMS Interno MG:** 25% (para cálculo do DIFAL)  
 
 
 
 
-### ✅ **2. Cálculo do ICMS ST**
-A base do ICMS ST considera o **MVA (45%)**:  
-Base ICMS ST = 450 x (1 + 45%) = 450 x 1.45 = R$652,50
-
-**ICMS destino (MG - 25%)**:  
-ICMS MG = 652,50 x 25% = R$163,13
-
-**ICMS ST a pagar**:  
-ICMS ST = 163,13 - 54,00 = R$109,13
+- **1. Cálculo do ICMS Próprio**
+    - **Base de cálculo do ICMS:**  
+    - Base = quantidade × valorUnitário = 5 × 90 = R$450,00
+    - **ICMS próprio (SP - origem):** 450 x 12% = R$54,00
 
 
-
-
-### ✅ **3. Cálculo do DIFAL**
-DIFAL é devido pois é uma venda para consumidor final **não contribuinte**.  
-
-DIFAL = (Base ICMS) x (Alíquota Interna MG - Alíquota Interestadual SP -> MG)
-DIFAL = 450 x (25% - 12%) = 450 x 13% = R$58,50
-
-Inclusão do FCP no DIFAL (se aplicável): FCP DIFAL = 450 x 2% = R$9,00
-
-
-### ✅ **4. Cálculo do FCP**
-FCP = 652,50 x 2% = R$13,05
+- **2. Cálculo do ICMS ST**
+    - A base do ICMS ST considera o **MVA (45%)**:  
+    - Base ICMS ST = 450 x (1 + 45%) = 450 x 1.45 = R$652,50
+    - **ICMS destino (MG - 25%)**:  652,50 x 25% = R$163,13
+    - **ICMS ST a pagar**: 163,13 - 54,00 = R$109,13
 
 
 
-### ✅ **5. Cálculo do PIS e COFINS**
-**Base PIS/COFINS = R$450,00**  
 
-PIS = 450 x 1,65% = R$7,43
+- **3. Cálculo do DIFAL**
+    - DIFAL é devido pois é uma venda para consumidor final **não contribuinte**.  
+
+    - DIFAL = (Base ICMS) x (Alíquota Interna MG - Alíquota Interestadual SP -> MG)
+    - DIFAL = 450 x (25% - 12%) = 450 x 13% = R$58,50
+    - Inclusão do FCP no DIFAL (se aplicável): FCP DIFAL = 450 x 2% = R$9,00
 
 
-COFINS = 450 x 7,60% = R$34,20
+- **4. Cálculo do FCP**
+    - FCP = 652,50 x 2% = R$13,05
+
+
+
+- **5. Cálculo do PIS e COFINS**
+    - **Base PIS/COFINS = R$450,00**  
+        - PIS = 450 x 1,65% = R$7,43
+        - COFINS = 450 x 7,60% = R$34,20
 
 
 ##  🔍 **Resumo dos Impostos Calculados**
@@ -99,13 +87,15 @@ COFINS = 450 x 7,60% = R$34,20
 
 
 
-## 📝 **Conclusão**
+## Conclusão
 - Como a venda é **interestadual para consumidor final**, o **DIFAL deve ser calculado**.  
 - O **ICMS ST (CST 10) é aplicado**, pois a cerveja está na lista de produtos com substituição tributária.  
 - O **FCP é calculado sobre a base do ICMS ST**, pois MG cobra o fundo de combate à pobreza.  
 - O **PIS e COFINS são calculados normalmente sobre a base de venda**.  
 
+
 ---
+
 
 # 📝**Contrato de payload (recebido dos erps)**
 
@@ -131,7 +121,7 @@ COFINS = 450 x 7,60% = R$34,20
 
 ---
 
-# 📚 **Cadastros necessários**
+# 📚 **Cadastros/tabelas necessárias**
 
 * Cadastro de alíquotas por uf (Cadastro necessário, para fácil manutenção das regras)
     - Exemplo: Venda de SP -> RJ = 12% icms, 18% st
@@ -156,26 +146,26 @@ COFINS = 450 x 7,60% = R$34,20
         - totalCofins
         - totalFcp
         - totalDifal
-        - versao (versão do sistema no momento do cálculo, para num futuro reprocessamento, não precisar refazer o cálculo, sendo a mesma versão)
+        - versaoSistema
     - Tabela "HistoricoCalculoItem":
-        - HistoricoCalculoNfe (FK)
-            - nItem
-            - CFOP
-            - quantidade
-            - valorUnitario
-            - ncm
-            - cst
-            - icmsCalculado
-            - icmsStCalculado
-            - pisCalculado
-            - cofinsCalculado
-            - fcpCalculado
-            - difalCalculado
+        - historicoCalculoNfe (FK)
+        - nItem
+        - CFOP
+        - quantidade
+        - valorUnitario
+        - ncm
+        - cst
+        - icmsCalculado
+        - icmsStCalculado
+        - pisCalculado
+        - cofinsCalculado
+        - fcpCalculado
+        - difalCalculado
 
 
 ---
 
-# Requisições Simultâneas (RPS)
+# ⚡ Requisições Simultâneas (RPS)
 
 **A Carga de trabalho esperada é:**
 - 10 mil requests por minuto  
@@ -232,20 +222,20 @@ COFINS = 450 x 7,60% = R$34,20
 
 -----
 
-# Consumo de Banda
+# 🌐 Consumo de Banda
 
-- Se cada documento tem 10 KB, e recebemos 2.400.000 por dia:
-    - Entrada total/dia = 2.400.000 × 10 KB = 24 GB/dia
-    - 24 GB / 4 horas = 6 GB/hora
-    - 6 GB / 3600 seg = ~1.7 MB/s.
-    - Então, precisamos de uma banda mínima de 15 Mbps (1.7 MB x 8 = 13.6Mbps).
+**Se cada documento tem 10 KB, e recebemos 2.400.000 por dia:**
+- Entrada total/dia = 2.400.000 × 10 KB = 24 GB/dia
+- 24 GB / 4 horas = 6 GB/hora
+- 6 GB / 3600 seg = ~1.7 MB/s.
+- Então, precisamos de uma banda mínima de 15 Mbps (1.7 MB x 8 = 13.6Mbps).
 
-- Cálculo de tráfego de leitura
-    - Considerando a leitura de cada registro, vamos considerar margem de reprocessamento (2X), cada leitura retornando ~10 KB.
-        - Saída total/dia = 2.400.000 × 10 KB × 2 = 48 GB/dia
-        - Se distribuirmos ao longo do dia (24h):
-        - 48 GB / 24 horas = 2 GB/hora
-        - 2 GB / 3600s = ~4.5Mbps
+**Cálculo de tráfego de leitura**
+- Considerando a leitura de cada registro, vamos considerar margem de reprocessamento (2X), cada leitura retornando ~10 KB.
+    - Saída total/dia = 2.400.000 × 10 KB × 2 = 48 GB/dia
+    - Se distribuirmos ao longo do dia (24h):
+    - 48 GB / 24 horas = 2 GB/hora
+    - 2 GB / 3600s = ~4.5Mbps
 
 ## Banda Total Estimada
 | Tipo                   | Dados/dia | Pico/hora | Largura de banda necessária |
@@ -258,8 +248,42 @@ COFINS = 450 x 7,60% = R$34,20
 
 ------
 
-# Armazenamento
+# 📦 Armazenamento
+
+**Armazenamento do Histórico de Cálculo de NFes**
+- Cada NFe ocupa 200 bytes.
+- Volume diário: 2.400.000 NFes.
+- Cálculo:
+    - Armazenamento diário: 2.400.000 × 200 bytes = 480 MB/dia.
+    - Armazenamento mensal: 480 MB × 30 dias = 14.4 GB/mês.
+    - Armazenamento em 6 meses: 14.4 GB × 6 meses = 86.4 GB.
+    - Reserva de 10% (logs, índices, backups): 86.4 GB × 1.1 = 95 GB.
+
+**Armazenamento do Histórico de Cálculo de Itens**
+- Cada item ocupa 200 bytes.
+- Considerando, que Cada NFe tenha em média, 10 itens.
+- Volume diário: 2.400.000 NFes × 10 itens = 24.000.000 itens.
+- Cálculo:
+    - Armazenamento diário: 24.000.000 × 200 bytes = 4.8 GB/dia.
+    - Armazenamento mensal: 4.8 GB × 30 dias = 144 GB/mês.
+    - Armazenamento em 6 meses: 144 GB × 6 meses = 864 GB.
+    - Reserva de 10% (logs, índices, backups): 864 GB × 1.1 = 950 GB.
 
 
----
-📊 Diagramas:
+## Armazenamento Total
+| Tipo de Dado                  | Armazenamento Diário | Armazenamento Mensal | Armazenamento (6 meses) |
+|--------------------------------|----------------------|----------------------|-------------------------|
+| **Histórico de Cálculo NFes**  | 480 MB               | 14.4 GB              | 86.4 GB                 |
+| **Histórico de Cálculo Itens** | 4.8 GB               | 144 GB               | 864 GB                  |
+| **Reserva para Logs/Backups**  | -                    | -                    | 95 GB                   |
+| **Total Estimado**             | ~5.3 GB              | 158.4 GB             | ~1.05 TB                |
+
+
+
+
+
+-----
+
+# 📊 Diagramas:
+
+<img src="./Fluxo-challenge.png" alt="Texto alternativo" style="background-color:white; padding:10px;">
