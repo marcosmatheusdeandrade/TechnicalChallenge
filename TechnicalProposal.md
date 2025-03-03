@@ -7,7 +7,17 @@
 4. **RPS ⚡**
 5. **Consumo de banda 🌐**
 6. **Armazenamento 📦**
-7. **Diagramas 📊**
+7. **
+# **📑 Tópicos abordados**
+
+1. **Exemplo de cálculo 🧮**
+2. **Contrato de payload 📝**
+3. **Cadastros/tabelas necessárias 📚**
+4. **RPS ⚡**
+5. **Consumo de banda 🌐**
+6. **Armazenamento 📦**
+7. **Infraestrutura necessária 🖥️**
+8. **Diagramas 📊**
 
 
 ---
@@ -279,11 +289,47 @@
 | **Total Estimado**             | ~5.3 GB              | 158.4 GB             | ~1.05 TB                |
 
 
+-----
 
+# 🖥️ Infraestrutura necessária
 
+**CPU e Threads**
+- Cada core suporta ~25 RPS.
+- 335 RPS / 25 RPS por core = 14 vCPUs.
+    - Trabalhar com minimo de 2 vCPUs(período ocioso) à 18 vCPUs(momentos de pico).
+
+**Memória RAM**
+- Redis precisa de ~2 GB para armazenar cache.
+- SQL Server precisa de ~8 GB para evitar swap.
+- Aplicação Java (Spring Boot) precisa de 1 a 1.5 GB por pod.
+
+**Kubernetes e Auto Scaling**
+- Mínimo de 2 pods (cada um com 1 vCPUs e 1 GB RAM) e permitir escalonamento automático até 9 pods e cada pod até 2vCPUs.
+- Trigger de auto scaling:
+    - cpu 85%
+    - memória 80%
+    - minimo de 2 instâncias
+    - máximo de 9 instâncias
+
+**Banco de Dados**
+- Redis (Cache de alíquotas)
+    - Configurar TTL ideal(pensando em reprocessamento) por chave de acesso.
+    - Replicação para alta disponibilidade.
+
+- SQL Server (bases separadas escrita/leitura)
+    - Tabela particionada para evitar locking excessivo.
+    - Base de leitura e base de escrita
+    - Outbox Pattern com tempo de job pré configurado, para replicação da base de escrita ocorrer em batchs para a base de leitura e não sobrecarregar as operações de escrita/leitura de cada base.
+    - **Armazenamento:** 1.1 TB
+        - Data Retention: 6 meses
+
+**Banda necessária**
+- Entrada (ERPs → API): ~15 Mbps
+- Saída (API → Consultas): ~4.5 Mbps
+- Banda total necessária: ~20 Mbps
 
 -----
 
 # 📊 Diagramas:
 
-<img src="./Fluxo-challenge.png" alt="Texto alternativo" style="background-color:white; padding:10px;">
+<img src="./Fluxo-challenge.png" alt="Texto alternativo" style="background-color:white; padding:10px;">**
