@@ -4,8 +4,8 @@
 1. **Exemplo de cálculo 🧮**
 2. **Contrato de payload 📝**
 3. **Cadastros/tabelas necessárias 📚**
-4. **RPS ⚡**
-5. **Consumo de banda 🌐**
+4. **RPS/Infra ⚡**
+5. **Consumo de banda/Infra 🌐**
 6. **Armazenamento 📦**
 7. **Diagramas 📊**
 
