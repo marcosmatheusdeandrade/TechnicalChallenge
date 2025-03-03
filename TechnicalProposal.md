@@ -1,13 +1,3 @@
-
-# **📑 Tópicos abordados**
-
-1. **Exemplo de cálculo 🧮**
-2. **Contrato de payload 📝**
-3. **Cadastros/tabelas necessárias 📚**
-4. **RPS/Infra ⚡**
-5. **Consumo de banda/Infra 🌐**
-6. **Armazenamento 📦**
-7. **
 # **📑 Tópicos abordados**
 
 1. **Exemplo de cálculo 🧮**
@@ -18,7 +8,6 @@
 6. **Armazenamento 📦**
 7. **Infraestrutura necessária 🖥️**
 8. **Diagramas 📊**
-
 
 ---
 
