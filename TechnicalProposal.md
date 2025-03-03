@@ -3,11 +3,12 @@
 1. **Exemplo de cálculo 🧮**
 2. **Contrato de payload 📝**
 3. **Cadastros/tabelas necessárias 📚**
-4. **RPS ⚡**
-5. **Consumo de banda 🌐**
+4. **RPS/Infra ⚡**
+5. **Consumo de banda/Infra 🌐**
 6. **Armazenamento 📦**
-7. **Infraestrutura necessária 🖥️**
-8. **Diagramas 📊**
+7. **Monitoramento 🔍**
+8. **Infraestrutura necessária 🖥️**
+9. **Diagramas 📊**
 
 ---
 
@@ -279,6 +280,26 @@
 
 
 -----
+
+# 🔍 Monitoramento
+**Datadog**
+- Podemos utilizar recursos do datadog, para termos rastreabilidade de erros, visualização de métricas e garantir que as configurações de infraestrutura estarão atendendo as necessidades do produto)
+    - Logs
+        - Monitorar logs de erro durante o cálculo, identificar cenários que só ocorram em produção, identificar causa raiz de um erro. 
+    - Traces
+        - Garantir baixa latência, identificando gargalos em partes especificas da aplicação
+        - Identificação de erros mais complexos, vendo o rastreamento da requisição inicial até o erro
+    - Métricas
+        - Centralizar e facilitar a visualização da infraestrutura e se está atendendo aos critérios que o produto precisa, exemplos de métricas:
+            - Uso de cpu
+            - Alocação de threads 
+    - Alertas
+        - Monitoramento de falhas critícas, alertando time de suporte ou aplicação, para rápida identificação e correção do problema.
+
+
+-------
+
+
 
 # 🖥️ Infraestrutura necessária
 
