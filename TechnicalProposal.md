@@ -206,7 +206,11 @@
 
 **Kubernetes e Auto Scaling**
 - Mínimo de 2 pods (cada um com 1 vCPUs e 1 GB RAM) e permitir escalonamento automático até 9 pods e cada pod até 2vCPUs.
-- Trigger de auto scaling: CPU acima de 70%
+- Trigger de auto scaling: 
+    - cpu 85%
+    - memória 80%
+    - minimo de 2 instâncias
+    - máximo de 9 instâncias
 
 **Banco de Dados**
 - Redis (Cache de alíquotas)
@@ -342,4 +346,4 @@
 
 # 📊 Diagramas:
 
-<img src="./Fluxo-challenge.png" alt="Texto alternativo" style="background-color:white; padding:10px;">
+<img src="./Diagrams.png" alt="Texto alternativo" style="background-color:white; padding:10px;">
